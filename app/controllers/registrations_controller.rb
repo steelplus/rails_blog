@@ -27,7 +27,7 @@ class RegistrationsController < Devise::RegistrationsController
           :content => {
               :user => {
                   :id => @user.id,
-                  :name => @user.email
+                  :email => @user.email
               }
           }
       } and return
