@@ -8,7 +8,6 @@ const setToken = (params) => {
     for (let i = 0; i < tags.length; i++) {
         if (tags[i].name === "csrf-token") {
             params.authenticity_token = tags[i].content;
-            // axios.defaults.headers['X-CSRF-TOKEN'] = tags[i].content;
             break;
         }
     }
@@ -17,11 +16,11 @@ const setToken = (params) => {
 
 // csrf-tokenを更新します
 const updateToken = (params) => {
-    if (params.authenticity_token !== null && params.authenticity_token !== '') {
+    if (params.data.authenticity_token !== null && params.data.authenticity_token !== '') {
         const tags = document.getElementsByTagName("meta");
         for (let i = 0; i < tags.length; i++) {
             if (tags[i].name === "csrf-token") {
-                tags[i].content = params.authenticity_token;
+                tags[i].content = params.data.authenticity_token;
                 break;
             }
         }
@@ -29,16 +28,52 @@ const updateToken = (params) => {
 };
 
 export default {
-    get: (path, params = {}) => {
-        return axios.get(path, {params}).then(response => updateToken(response)).catch(response => updateToken(response));
+    get: (path, params = {}, callback = () => {
+    }, errorCallback = () => {
+    }) => {
+        return axios.get(path, {params})
+            .then(response => {
+                callback(response);
+                updateToken(response)
+            }).catch(error => {
+                errorCallback(error);
+                updateToken(error.response)
+            });
     },
-    post: (path, params = {}) => {
-        return axios.post(path, setToken(params)).then(response => updateToken(response)).catch(response => updateToken(response));
+    post: (path, params = {}, callback = () => {
+    }, errorCallback = () => {
+    }) => {
+        return axios.post(path, setToken(params))
+            .then(response => {
+                callback(response);
+                updateToken(response)
+            }).catch(error => {
+                errorCallback(error);
+                updateToken(error.response)
+            });
     },
-    put: (path, params = {}) => {
-        return axios.put(path, setToken(params)).then(response => updateToken(response)).catch(response => updateToken(response));
+    put: (path, params = {}, callback = () => {
+    }, errorCallback = () => {
+    }) => {
+        return axios.put(path, setToken(params))
+            .then(response => {
+                callback(response);
+                updateToken(response)
+            }).catch(error => {
+                errorCallback(error);
+                updateToken(error.response)
+            });
     },
-    delete: (path, params = {}) => {
-        return axios.delete(path, {params: setToken(params)}).then(response => updateToken(response)).catch(response => updateToken(response));
+    delete: (path, params = {}, callback = () => {
+    }, errorCallback = () => {
+    }) => {
+        return axios.delete(path, {params: setToken(params)})
+            .then(response => {
+                callback(response);
+                updateToken(response)
+            }).catch(error => {
+                errorCallback(error);
+                updateToken(error.response)
+            });
     },
 }

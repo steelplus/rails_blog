@@ -10,9 +10,9 @@ class RegistrationsController < Devise::RegistrationsController
     super do
       # エラー時
       if @user.errors.full_messages.size > 0
-        render status: 500, :json => {
+        render status: 400, :json => {
             :status => 'error',
-            :csrf_token => form_authenticity_token,
+            :authenticity_token => form_authenticity_token,
             :content => {
                 :message => {
                     :error => @user.errors.full_messages
@@ -23,7 +23,7 @@ class RegistrationsController < Devise::RegistrationsController
       # 正常時
       render status: 200, :json => {
           :status => 'ok',
-          :csrf_token => form_authenticity_token,
+          :authenticity_token => form_authenticity_token,
           :content => {
               :user => {
                   :id => @user.id,
@@ -39,7 +39,7 @@ class RegistrationsController < Devise::RegistrationsController
     super do
       render :json => {
           :status => 'ok',
-          :csrf_token => form_authenticity_token,
+          :authenticity_token => form_authenticity_token,
           :result => {
               :message => '退会処理が完了しました。'
           }

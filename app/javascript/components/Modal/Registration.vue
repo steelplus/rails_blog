@@ -8,6 +8,13 @@
             </header>
             <section class="modal-card-body">
                 <!--フォーム-->
+                <div :class="{'is-error-invisible': errors.length === 0}">
+                    <ul id="error-message">
+                        <li v-for="error in errors">
+                            {{ error }}
+                        </li>
+                    </ul>
+                </div>
                 <div class="field">
                     <label class="label">メールアドレス</label>
                     <div class="control">
@@ -50,18 +57,38 @@
                     'email': null,
                     'password': null,
                     'password_confirmation': null
-                }
+                },
+                errors: []
             }
         },
         methods: {
             registration: function () {
-                this.$store.dispatch('user/signUp', {user: this.user});
+                this.$store.dispatch('user/signUp', {
+                    user: this.user,
+                    callback: this.registrationCallback,
+                    errorCallback: this.registrationErrorCallback
+                });
+            },
+            registrationCallback: function (response) {
+                // モーダルを閉じる
                 this.$emit('inactive-regist');
+                // エラーを初期化
+                this.errors = [];
+            },
+            registrationErrorCallback: function (error) {
+                this.errors = error.response.data.content.message.error;
             }
         }
     }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+    .is-error-invisible {
+        display: none;
+    }
 
+    #error-message {
+        color: red;
+        font-weight: bold;
+    }
 </style>

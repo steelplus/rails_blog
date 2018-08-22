@@ -6,7 +6,7 @@ class SessionsController < Devise::SessionsController
     super do
       render :json => {
           :status => 'ok',
-          :csrf_token => form_authenticity_token,
+          :authenticity_token => form_authenticity_token,
           :content => {
               :user => {
                   :id => @user.id,
@@ -21,7 +21,7 @@ class SessionsController < Devise::SessionsController
     super do
       render :json => {
           :csrf_param => request_forgery_protection_token,
-          :csrf_token => form_authenticity_token
+          :authenticity_token => form_authenticity_token
       } and return
     end
   end

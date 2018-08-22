@@ -1,13 +1,13 @@
 <template>
-    <nav class="navbar is-link is-fixed-top" role="navigation" aria-label="main navigation">
+    <nav class="navbar is-dark is-fixed-top" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
             <div class="navbar-item" v-on:click=activeRegistration>
                 新規登録
             </div>
-            <div class="navbar-item">
+            <div v-if="this.$store.state.user.user.id === null" class="navbar-item">
                 ログイン
             </div>
-            <div v-on:click="logout" class="navbar-item">
+            <div v-else v-on:click="logout" class="navbar-item">
                 ログアウト
             </div>
         </div>

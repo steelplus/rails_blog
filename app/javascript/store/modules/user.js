@@ -9,38 +9,34 @@ export default {
             id: null,
             email: null,
         },
-        message: {
-            info: null,
-            error: null,
-        }
     },
-    getters: {
-        id: state => state.id
-    },
+    getters: {},
     mutations: {
         registMutation(state, payload) {
-            state.user = payload.user;
-            state.message.info = payload.message;
+            console.log(payload);
+            state.user = payload.content.user;
         },
         quitMutation(state, payload) {
             state.user = {id: null, email: null};
-            state.message.info = payload.message;
         },
         loginMutation(state, payload) {
             state.user = payload.user;
-            state.message.info = payload.message;
         },
         logoutMutation(state, payload) {
             state.user = {id: null, email: null};
-            state.message.info = payload.message;
         }
     },
     actions: {
         // ユーザ作成
-        signUp({commit, state}, user) {
-            api.post('/users', user)
-                .then(response => commit('registMutation', response))
-                .catch(response => alert(response));
+        signUp({commit, state}, callbacks) {
+            api.post('/users', {user: callbacks.user},
+                (response) => {
+                    commit('registMutation', response.data);
+                    callbacks.callback(response);
+                },
+                (error) => {
+                    callbacks.errorCallback(error)
+                })
         },
         // ユーザ退会
         quit({commit, state}, user) {
