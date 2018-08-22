@@ -9,13 +9,13 @@ class RegistrationsController < Devise::RegistrationsController
     # ユーザ情報登録
     super do
       # エラー時
-      if @user.id.nil?
+      if @user.errors.full_messages.size > 0
         render status: 500, :json => {
             :status => 'error',
             :csrf_token => form_authenticity_token,
             :content => {
                 :message => {
-                    :error => 'ユーザ登録に失敗しました'
+                    :error => @user.errors.full_messages
                 }
             }
         } and return
