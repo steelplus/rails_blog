@@ -4,6 +4,6 @@ class HomeController < ApplicationController
 
   # リダイレクト処理
   def redirect_to_root
-    this.index
+    redirect_to :action => 'index'
   end
 end

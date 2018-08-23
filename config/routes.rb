@@ -4,5 +4,5 @@ Rails.application.routes.draw do
   root 'home#index'
   # app.vueでリロード時にログイン情報を取得する
   get '/user/get_user'
-  get '*path', to: 'home#redirect_to_root'
+  get '*path', to: 'home#index'
 end
