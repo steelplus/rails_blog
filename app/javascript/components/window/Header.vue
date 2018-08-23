@@ -57,5 +57,10 @@
 <style lang="scss" scoped>
     .navbar-item {
         cursor: pointer;
+        &:hover {
+            background: white;
+            color: #2E2F30 !important;
+            transition: .2s ease-out;
+        }
     }
 </style>
