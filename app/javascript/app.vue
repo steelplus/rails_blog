@@ -9,7 +9,6 @@
 
 <script>
     import Header from './components/window/Header.vue';
-    import api from '../javascript/api/axios';
 
     export default {
         components: {
