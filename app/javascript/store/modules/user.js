@@ -13,14 +13,13 @@ export default {
     getters: {},
     mutations: {
         registMutation(state, payload) {
-            console.log(payload);
             state.user = payload.content.user;
         },
         quitMutation(state, payload) {
             state.user = {id: null, email: null};
         },
         loginMutation(state, payload) {
-            state.user = payload.user;
+            state.user = payload.content.user;
         },
         logoutMutation(state, payload) {
             state.user = {id: null, email: null};
@@ -45,10 +44,15 @@ export default {
                 .catch(response => alert(response));
         },
         // ログイン
-        login({commit, state}, user) {
-            api.post('/users/sign_in', user)
-                .then(response => commit('loginMutation', response))
-                .catch(response => alert(response));
+        login({commit, state}, callbacks) {
+            api.post('/users/sign_in', {user: callbacks.user},
+                (response) => {
+                    commit('loginMutation', response.data);
+                    callbacks.callback(response);
+                },
+                (error) => {
+                    callbacks.errorCallback(error)
+                })
         },
         // ログアウト
         logout({commit, state}) {

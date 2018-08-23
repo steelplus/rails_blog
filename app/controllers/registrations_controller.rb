@@ -21,7 +21,7 @@ class RegistrationsController < Devise::RegistrationsController
         } and return
       end
       # 正常時
-      render status: 200, :json => {
+      render status: 201, :json => {
           :status => 'ok',
           :authenticity_token => form_authenticity_token,
           :content => {

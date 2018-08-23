@@ -4,7 +4,7 @@
             <div class="navbar-item" v-on:click=activeRegistration>
                 新規登録
             </div>
-            <div v-if="this.$store.state.user.user.id === null" class="navbar-item">
+            <div v-on:click="activeLogin" v-if="this.$store.state.user.user.id === null" class="navbar-item">
                 ログイン
             </div>
             <div v-else v-on:click="logout" class="navbar-item">
@@ -12,21 +12,24 @@
             </div>
         </div>
         <Registration v-bind:is-active="registrationIsActive" v-on:inactive-regist="inactiveRegistration"/>
+        <Login v-bind:is-active="loginIsActive" v-on:inactive-login="inactiveLogin"/>
     </nav>
 </template>
 
 <script>
-    import Registration from '../Modal/Registration'
+    import Registration from '../Modal/Registration';
+    import Login from '../Modal/Login'
 
     export default {
-        components: {Registration},
+        components: {Login, Registration},
         comments: [
-            Registration
+            Registration, Login
         ],
         name: "Header",
         data() {
             return {
-                registrationIsActive: false
+                registrationIsActive: false,
+                loginIsActive: false
             }
         },
         methods: {
@@ -35,6 +38,12 @@
             },
             inactiveRegistration: function () {
                 this.registrationIsActive = false;
+            },
+            activeLogin: function () {
+                this.loginIsActive = true;
+            },
+            inactiveLogin: function () {
+                this.loginIsActive = false;
             },
             logout: function () {
                 this.$store.dispatch('user/logout');
