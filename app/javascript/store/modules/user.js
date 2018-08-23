@@ -59,6 +59,16 @@ export default {
             api.delete('/users/sign_out')
                 .then(response => commit('logoutMutation', response))
                 .catch(response => alert(response));
+        },
+        // ログイン状態取得
+        checkUser({commit, state}, callbacks) {
+            api.get('/user/get_user', {}, (response) => {
+                // ログイン済みであればログイン情報をstateに保存する
+                if (response.data.content.user != null) {
+                    commit('loginMutation', response.data);
+                }
+                callbacks.callback(response);
+            });
         }
     }
 }

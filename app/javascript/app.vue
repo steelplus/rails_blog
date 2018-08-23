@@ -9,11 +9,25 @@
 
 <script>
     import Header from './components/window/Header.vue';
+    import api from '../javascript/api/axios';
 
     export default {
         components: {
             Header,
         },
+        mounted() {
+            // ログインしているかどうかを判定する
+            this.$store.dispatch('user/checkUser', {callback: this.checkLoggedIn});
+        },
+        methods: {
+            checkLoggedIn: function (response) {
+                if (this.$store.state.user.user.id === null) {
+                    this.$router.push('/');
+                } else {
+                    this.$router.push('/home');
+                }
+            }
+        }
     }
 </script>
 
