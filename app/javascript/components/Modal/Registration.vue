@@ -74,6 +74,8 @@
                 this.$emit('inactive-regist');
                 // エラーを初期化
                 this.errors = [];
+                // ホームに遷移
+                this.$router.push('/home');
             },
             registrationErrorCallback: function (error) {
                 this.errors = error.response.data.content.message.error;

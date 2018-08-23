@@ -65,6 +65,8 @@
                 this.$emit('inactive-login');
                 // エラーを初期化
                 this.errors = [];
+                // ホームに遷移
+                this.$router.push('/home');
             },
             loginErrorCallback: function (error) {
                 console.log(error);

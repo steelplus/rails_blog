@@ -47,6 +47,8 @@
             },
             logout: function () {
                 this.$store.dispatch('user/logout');
+                // 初期画面に戻る
+                this.$router.push('/');
             }
         }
     }
