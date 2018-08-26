@@ -1,24 +1,10 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Rails + Vue + vue-router + Vuex + axiosでブログのようなものを作ってみるテスト
 
-Things you may want to cover:
+WIP
 
-* Ruby version
+# 現在ある機能
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+ユーザー新規登録
+ログイン
