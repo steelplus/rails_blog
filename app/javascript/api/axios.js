@@ -36,7 +36,7 @@ const onError = (error) => {
 export default {
     get: async (path, params = {}, callback = () => {
     }) => {
-        await axios.get(path, setToken(params))
+        await axios.get(path, {params: setToken(params)})
             .then(response => {
                 callback(response);
                 updateToken(response);
