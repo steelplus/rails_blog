@@ -41,15 +41,14 @@ export default {
             });
     },
     post: (path, params = {}, callback = () => {
-    }, errorCallback = () => {
     }) => {
         return axios.post(path, setToken(params))
             .then(response => {
                 callback(response);
                 updateToken(response)
             }).catch(error => {
-                errorCallback(error);
-                updateToken(error.response)
+                updateToken(error.response);
+                throw error;
             });
     },
     put: (path, params = {}, callback = () => {

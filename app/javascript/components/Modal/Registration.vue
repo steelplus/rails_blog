@@ -63,23 +63,20 @@
         },
         methods: {
             registration: function () {
-                this.$store.dispatch('user/signUp', {
-                    user: this.user,
-                    callback: this.registrationCallback,
-                    errorCallback: this.registrationErrorCallback
-                });
+                try {
+                    this.$store.dispatch('user/signUp', {
+                        user: this.user,
+                    });
+                    // モーダルを閉じる
+                    this.$emit('inactive-regist');
+                    // エラーを初期化
+                    this.errors = [];
+                    // ホームに遷移
+                    this.$router.push('/home');
+                } catch (e) {
+                    this.errors = error.response.data.content.message.error;
+                }
             },
-            registrationCallback: function (response) {
-                // モーダルを閉じる
-                this.$emit('inactive-regist');
-                // エラーを初期化
-                this.errors = [];
-                // ホームに遷移
-                this.$router.push('/home');
-            },
-            registrationErrorCallback: function (error) {
-                this.errors = error.response.data.content.message.error;
-            }
         }
     }
 </script>

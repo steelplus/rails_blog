@@ -54,24 +54,20 @@
         },
         methods: {
             login: function () {
-                this.$store.dispatch('user/login', {
-                    user: this.user,
-                    callback: this.loginCallback,
-                    errorCallback: this.loginErrorCallback
-                });
+                try {
+                    this.$store.dispatch('user/login', {
+                        user: this.user,
+                    });
+                    // モーダルを閉じる
+                    this.$emit('inactive-login');
+                    // エラーを初期化
+                    this.errors = [];
+                    // ホームに遷移
+                    this.$router.push('/home');
+                } catch (e) {
+                    this.errors = error.response.data.content.message.error;
+                }
             },
-            loginCallback: function (response) {
-                // モーダルを閉じる
-                this.$emit('inactive-login');
-                // エラーを初期化
-                this.errors = [];
-                // ホームに遷移
-                this.$router.push('/home');
-            },
-            loginErrorCallback: function (error) {
-                console.log(error);
-                this.errors = error.response.data.content.message.error;
-            }
         }
     }
 </script>

@@ -27,15 +27,11 @@ export default {
     },
     actions: {
         // ユーザ作成
-        signUp({commit, state}, callbacks) {
-            api.post('/users', {user: callbacks.user},
+        signUp({commit, state}, data) {
+            api.post('/users', {user: data.user},
                 (response) => {
                     commit('registMutation', response.data);
-                    callbacks.callback(response);
-                },
-                (error) => {
-                    callbacks.errorCallback(error)
-                })
+                },)
         },
         // ユーザ退会
         quit({commit, state}, user) {
@@ -44,15 +40,11 @@ export default {
                 .catch(response => alert(response));
         },
         // ログイン
-        login({commit, state}, callbacks) {
-            api.post('/users/sign_in', {user: callbacks.user},
+        login({commit, state}, data) {
+            api.post('/users/sign_in', {user: data.user},
                 (response) => {
                     commit('loginMutation', response.data);
-                    callbacks.callback(response);
-                },
-                (error) => {
-                    callbacks.errorCallback(error)
-                })
+                },)
         },
         // ログアウト
         logout({commit, state}) {
