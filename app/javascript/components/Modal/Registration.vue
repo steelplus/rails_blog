@@ -62,9 +62,9 @@
             }
         },
         methods: {
-            registration: function () {
+            registration: async function () {
                 try {
-                    this.$store.dispatch('user/signUp', {
+                    await this.$store.dispatch('user/signUp', {
                         user: this.user,
                     });
                     // モーダルを閉じる
@@ -74,7 +74,7 @@
                     // ホームに遷移
                     this.$router.push('/home');
                 } catch (e) {
-                    this.errors = error.response.data.content.message.error;
+                    this.errors = e.error;
                 }
             },
         }

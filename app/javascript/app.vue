@@ -9,24 +9,22 @@
 
 <script>
     import Header from './components/window/Header.vue';
+    import 'babel-polyfill';
 
     export default {
         components: {
             Header,
         },
-        mounted() {
+        async mounted() {
             // ログインしているかどうかを判定する
-            this.$store.dispatch('user/checkUser', {callback: this.checkLoggedIn});
-        },
-        methods: {
-            checkLoggedIn: function (response) {
-                if (this.$store.state.user.user.id === null) {
-                    this.$router.push('/');
-                } else {
-                    this.$router.push('/home');
-                }
+            await this.$store.dispatch('user/checkUser');
+            if (this.$store.state.user.user.id === null) {
+                this.$router.push('/');
+            } else {
+                this.$router.push('/home');
             }
-        }
+        },
+        methods: {}
     }
 </script>
 

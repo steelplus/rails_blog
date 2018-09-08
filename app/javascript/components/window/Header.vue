@@ -1,7 +1,7 @@
 <template>
     <nav class="navbar is-dark is-fixed-top" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
-            <div class="navbar-item" v-on:click=activeRegistration>
+            <div v-if="this.$store.state.user.user.id === null" class="navbar-item" v-on:click=activeRegistration>
                 新規登録
             </div>
             <div v-on:click="activeLogin" v-if="this.$store.state.user.user.id === null" class="navbar-item">
@@ -18,7 +18,8 @@
 
 <script>
     import Registration from '../Modal/Registration';
-    import Login from '../Modal/Login'
+    import Login from '../Modal/Login';
+    import 'babel-polyfill';
 
     export default {
         components: {Login, Registration},
@@ -45,8 +46,8 @@
             inactiveLogin: function () {
                 this.loginIsActive = false;
             },
-            logout: function () {
-                this.$store.dispatch('user/logout');
+            logout: async function () {
+                await this.$store.dispatch('user/logout');
                 // 初期画面に戻る
                 this.$router.push('/');
             }

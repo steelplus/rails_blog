@@ -4,6 +4,7 @@
   "dependencies": {
     "@rails/webpacker": "3.5",
     "axios": "^0.18.0",
+    "babel-polyfill": "^6.26.0",
     "bulma": "^0.7.1",
     "node-sass": "^4.9.3",
     "sass-loader": "^7.1.0",

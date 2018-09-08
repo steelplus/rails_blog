@@ -38,6 +38,8 @@
 </template>
 
 <script>
+    import 'babel-polyfill';
+
     export default {
         name: "Login",
         props: {
@@ -53,9 +55,9 @@
             }
         },
         methods: {
-            login: function () {
+            login: async function () {
                 try {
-                    this.$store.dispatch('user/login', {
+                    await this.$store.dispatch('user/login', {
                         user: this.user,
                     });
                     // モーダルを閉じる
@@ -65,7 +67,7 @@
                     // ホームに遷移
                     this.$router.push('/home');
                 } catch (e) {
-                    this.errors = error.response.data.content.message.error;
+                    this.errors = e.error;
                 }
             },
         }

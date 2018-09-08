@@ -1,6 +1,6 @@
 // ログインユーザ関連の情報を管理するmodule
-
 import api from '../../api/axios';
+import 'babel-polyfill';
 
 export default {
     namespaced: true,
@@ -27,40 +27,42 @@ export default {
     },
     actions: {
         // ユーザ作成
-        signUp({commit, state}, data) {
-            api.post('/users', {user: data.user},
+        async signUp({commit, state}, data) {
+            await api.post('/users', {user: data.user},
                 (response) => {
                     commit('registMutation', response.data);
-                },)
+                });
         },
         // ユーザ退会
-        quit({commit, state}, user) {
-            api.delete('/users', user)
-                .then(response => commit('quitMutation', response))
-                .catch(response => alert(response));
+        async quit({commit, state}, data) {
+            await api.delete('/users', {user: data.user},
+                (response) => {
+                    commit('quitMutation', response);
+                });
         },
         // ログイン
-        login({commit, state}, data) {
-            api.post('/users/sign_in', {user: data.user},
+        async login({commit, state}, data) {
+            await api.post('/users/sign_in', {user: data.user},
                 (response) => {
                     commit('loginMutation', response.data);
-                },)
+                });
         },
         // ログアウト
-        logout({commit, state}) {
-            api.delete('/users/sign_out')
-                .then(response => commit('logoutMutation', response))
-                .catch(response => alert(response));
+        async logout({commit, state}) {
+            await api.delete('/users/sign_out', {},
+                (response) => {
+                    commit('logoutMutation', response);
+                });
         },
         // ログイン状態取得
-        checkUser({commit, state}, callbacks) {
-            api.get('/user/get_user', {}, (response) => {
-                // ログイン済みであればログイン情報をstateに保存する
-                if (response.data.content.user != null) {
-                    commit('loginMutation', response.data);
-                }
-                callbacks.callback(response);
-            });
+        async checkUser({commit, state}) {
+            await api.get('/user/get_user', {},
+                (response) => {
+                    // ログイン済みであればログイン情報をstateに保存する
+                    if (response.data.content.user != null) {
+                        commit('loginMutation', response.data);
+                    }
+                });
         }
     }
 }

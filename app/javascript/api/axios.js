@@ -1,6 +1,6 @@
 // rails serverとのやり取りをするAPI
-
 import axios from 'axios';
+import 'babel-polyfill';
 
 // html-meta内のcsrf-tokenを返却します
 const setToken = (params) => {
@@ -27,52 +27,43 @@ const updateToken = (params) => {
     }
 };
 
+// エラー時はthrowします。エラーはVue-Componentでcatchします。
+const onError = (error) => {
+    updateToken(error.response);
+    throw error.response.data.content.message;
+};
+
 export default {
-    get: (path, params = {}, callback = () => {
-    }, errorCallback = () => {
+    get: async (path, params = {}, callback = () => {
     }) => {
-        return axios.get(path, {params})
+        await axios.get(path, setToken(params))
             .then(response => {
                 callback(response);
-                updateToken(response)
-            }).catch(error => {
-                errorCallback(error);
-                updateToken(error.response)
-            });
+                updateToken(response);
+            }).catch(onError);
     },
-    post: (path, params = {}, callback = () => {
+    post: async (path, params = {}, callback = () => {
     }) => {
-        return axios.post(path, setToken(params))
+        await axios.post(path, setToken(params))
             .then(response => {
                 callback(response);
-                updateToken(response)
-            }).catch(error => {
-                updateToken(error.response);
-                throw error;
-            });
+                updateToken(response);
+            }).catch(onError);
     },
-    put: (path, params = {}, callback = () => {
-    }, errorCallback = () => {
+    put: async (path, params = {}, callback = () => {
     }) => {
-        return axios.put(path, setToken(params))
+        await axios.put(path, setToken(params))
             .then(response => {
                 callback(response);
-                updateToken(response)
-            }).catch(error => {
-                errorCallback(error);
-                updateToken(error.response)
-            });
+                updateToken(response);
+            }).catch(onError);
     },
-    delete: (path, params = {}, callback = () => {
-    }, errorCallback = () => {
+    delete: async (path, params = {}, callback = () => {
     }) => {
-        return axios.delete(path, {params: setToken(params)})
+        await axios.delete(path, {params: setToken(params)})
             .then(response => {
                 callback(response);
-                updateToken(response)
-            }).catch(error => {
-                errorCallback(error);
-                updateToken(error.response)
-            });
+                updateToken(response);
+            }).catch(onError);
     },
 }
